@@ -122,8 +122,8 @@ class AttendanceController{
 
   //Read All in specific date
   async allDate(req, res){
-    const currentini = new Date(req.body.ini);
-    const currentfim = new Date(req.body.fim);
+    const currentini = new Date(req.params.ini);
+    const currentfim = new Date(req.params.fim);
     await AttendanceModel.find({
       'dia': {'$gte': startOfDay(currentini), '$lte': endOfDay(currentfim)}
     })
@@ -137,10 +137,37 @@ class AttendanceController{
     })
     }
 
+  //Read By Patient
+  async byPatient(req, res){
+    await AttendanceModel.find({'id_cpf' : {'$in' : req.params.id_cpf}})
+    .populate('id_crm').populate('id_cpf')
+    .sort('dia')//Atendimento organizado por data e hora
+    .then(response => {
+      return res.status(200).json(response);
+    })
+    .catch(error => {
+      return res.status(500).json(error);
+    })
+    }
+
+  //Read By Doctor
+  async byDoctor(req, res){
+    await AttendanceModel.find({'id_crm' : {'$in' : req.params.id_crm}})
+    .populate('id_crm').populate('id_cpf')
+    .sort('dia')//Atendimento organizado por data e hora
+    .then(response => {
+      return res.status(200).json(response);
+    })
+    .catch(error => {
+      return res.status(500).json(error);
+    })
+    }
+
+
   //Read Today By Doctor
   async todayByDoctor(req, res){
     await AttendanceModel.find({
-      'crm' : {'$in' : req.params.crm},
+      'id_crm' : {'$in' : req.params.id_crm},
       'dia': {'$gte': startOfDay(current), '$lte': endOfDay(current)}
     })
     .populate('id_crm').populate('id_cpf')
@@ -158,7 +185,7 @@ class AttendanceController{
     const currentini = new Date(req.body.ini);
     const currentfim = new Date(req.body.fim);
     await AttendanceModel.find({
-      'crm' : {'$in' : req.params.crm},
+      'id_crm' : {'$in' : req.params.id_crm},
       'dia': {'$gte': startOfDay(currentini), '$lte': endOfDay(currentfim)}
     })
     .populate('id_crm').populate('id_cpf')
@@ -217,8 +244,6 @@ class AttendanceController{
       return res.status(500).json(error);
     })
     }
-    
-
 }
 
 module.exports = new AttendanceController();

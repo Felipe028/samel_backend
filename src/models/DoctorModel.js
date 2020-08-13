@@ -7,7 +7,7 @@ const DoctorSchema = new Schema({
   nome: {type: String, required: true},
   especialidade: {type: String},
   crm: {type: String, required: true},
-  senha: {type: String, required: true, select: false},
+  senha: {type: String},
   created: {type: Date, default: Date.now()}
 })
 

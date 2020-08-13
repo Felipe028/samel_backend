@@ -9,15 +9,13 @@ class DoctorController{
     if(!req.body.crm){
       return res.status(404).json({error: 'O campo crm é obrigatório'});
     }
-    if(!req.body.senha){
-      return res.status(404).json({error: 'O campo senha é obrigatório'});
-    }
+
 
     const newDoctor = {
       nome: req.body.nome,
       especialidade: req.body.especialidade,
       crm: req.body.crm,
-      senha: req.body.senha,
+      senha: '123',
       created: req.body.created
     }
    //Verificando se o CRM já está cadastrado
@@ -52,14 +50,12 @@ class DoctorController{
     if(!req.body.crm){
       return res.status(404).json({error: 'O campo crm é obrigatório'});
     }
-    if(!req.body.senha){
-      return res.status(404).json({error: 'O campo senha é obrigatório'});
-    }
+    
     const newDoctor = {
       nome: req.body.nome,
       especialidade: req.body.especialidade,
       crm: req.body.crm,
-      senha: req.body.senha,
+      senha: '123',
       created: req.body.created
     }
     //Verificando se o CRM ja está cadastrado
@@ -138,7 +134,7 @@ class DoctorController{
   
     //Read by CRM
     async crm(req, res){
-    await DoctorModel.findOne({'crm': req.params.crm})
+    await DoctorModel.find({'crm': req.params.crm})
     .then(response => {
       if(response){
         return res.status(200).json(response);

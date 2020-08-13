@@ -139,9 +139,9 @@ class PatientController{
     })
     }
   
-    //Read by CRM
+    //Read by CPF
     async cpf(req, res){
-    await PatientModel.findOne({'cpf': req.params.cpf})
+    await PatientModel.find({'cpf': req.params.cpf})
     .then(response => {
       if(response){
         return res.status(200).json(response);
